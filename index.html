@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1b1e23">
+<meta name="description" content="">
+<title>SudokuGrids</title>
+<script>try{var s=JSON.parse(localStorage.getItem('sg.settings'));var t=s&&s.theme;if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+<header class="bar">
+  <h1><a href="https://github.com/CyberZHG/SudokuGrids" target="_blank" rel="noopener">SudokuGrids</a></h1>
+  <div class="actions">
+    <select id="langSel" class="lang" data-i18n-title="settings.lang"></select>
+    <button id="helpBtn" type="button" class="icon-btn" data-icon="help" data-i18n-title="btn.help"></button>
+    <button id="achvBtn" type="button" class="icon-btn" data-icon="trophy" data-i18n-title="btn.achievements"></button>
+    <button id="settingsBtn" type="button" class="icon-btn" data-icon="sliders" data-i18n-title="btn.settings"></button>
+    <button id="themeBtn" type="button" class="icon-btn" data-i18n-title="btn.theme"></button>
+  </div>
+</header>
+
+<div class="game">
+  <div class="stage">
+    <canvas id="board"></canvas>
+    <canvas id="minimap" class="minimap" hidden></canvas>
+    <div id="bossBanner" class="banner" hidden>
+      <button id="leaveBtn" type="button"><span data-icon="back"></span><span data-i18n="boss.leave"></span></button>
+      <span id="bossTitle" class="banner-title"></span>
+      <button id="againBtn" type="button" hidden data-i18n="practice.again"></button>
+    </div>
+    <div class="zoom">
+      <button id="zoomIn" type="button" class="icon-btn" data-icon="plus" data-i18n-title="btn.zoomIn"></button>
+      <button id="zoomOut" type="button" class="icon-btn" data-icon="minus" data-i18n-title="btn.zoomOut"></button>
+      <button id="fitBtn" type="button" class="icon-btn" data-icon="fit" data-i18n-title="btn.fit"></button>
+      <button id="focusBtn" type="button" class="icon-btn" data-icon="target" data-i18n-title="btn.focus"></button>
+      <button id="targetBtn" type="button" class="icon-btn" data-icon="flag" data-i18n-title="btn.next"></button>
+    </div>
+  </div>
+  <aside class="side">
+    <button id="collapseBtn" type="button" class="collapse-btn"></button>
+    <section class="card pad-card">
+      <div id="pad" class="pad"></div>
+      <div class="pad-tools">
+        <button id="notesBtn" type="button" aria-pressed="false"><span data-icon="pencil"></span><span data-i18n="pad.notes"></span></button>
+        <button id="eraseBtn" type="button"><span data-icon="erase"></span><span data-i18n="pad.erase"></span></button>
+        <button id="undoBtn" type="button" data-i18n-title="pad.undo"><span data-icon="undo"></span></button>
+        <button id="redoBtn" type="button" data-i18n-title="pad.redo"><span data-icon="redo"></span></button>
+      </div>
+    </section>
+    <section class="card">
+      <h2 id="infoTitle"></h2>
+      <div id="info" class="info"></div>
+    </section>
+    <section id="trialCard" class="card">
+      <h2 data-i18n="trials.title"></h2>
+      <div id="trials" class="trials"></div>
+    </section>
+    <section id="practiceCard" class="card">
+      <h2 data-i18n="practice.title"></h2>
+      <p class="muted" data-i18n="practice.desc"></p>
+      <div id="practiceRules" class="chips"></div>
+      <button id="practiceBtn" type="button" class="primary"></button>
+      <button id="practiceResume" type="button" hidden></button>
+    </section>
+    <section id="progressCard" class="card">
+      <h2 data-i18n="progress.title"></h2>
+      <div id="progress"></div>
+    </section>
+  </aside>
+</div>
+
+<dialog id="helpDlg" class="dialog">
+  <h2 data-i18n="help.title"></h2>
+  <p data-i18n="help.p1"></p>
+  <p data-i18n="help.p2"></p>
+  <p data-i18n="help.p3"></p>
+  <p data-i18n="help.p4"></p>
+  <p data-i18n="help.p5"></p>
+  <h3 data-i18n="help.controls"></h3>
+  <ul>
+    <li data-i18n="help.c1"></li>
+    <li data-i18n="help.c2"></li>
+    <li data-i18n="help.c3"></li>
+    <li data-i18n="help.c4"></li>
+    <li data-i18n="help.c5"></li>
+  </ul>
+  <div class="row end"><button type="button" class="primary" data-close data-i18n="btn.close" autofocus></button></div>
+</dialog>
+
+<dialog id="settingsDlg" class="dialog">
+  <h2 data-i18n="settings.title"></h2>
+  <label class="check"><input id="autoCheck" type="checkbox"><span data-i18n="settings.autoCheck"></span></label>
+  <h3 data-i18n="backup.title"></h3>
+  <p class="muted" data-i18n="backup.desc"></p>
+  <div class="row">
+    <button id="exportBtn" type="button" data-i18n="backup.export"></button>
+    <label class="btn"><span data-i18n="backup.import"></span><input id="importFile" type="file" accept=".json,application/json" hidden></label>
+  </div>
+  <h3 data-i18n="settings.danger"></h3>
+  <div class="row"><button id="resetBtn" type="button" class="danger" data-i18n="settings.reset"></button></div>
+  <div class="row end"><button type="button" class="primary" data-close data-i18n="btn.close"></button></div>
+</dialog>
+
+<dialog id="confirmDlg" class="dialog">
+  <p id="confirmText"></p>
+  <div class="row end">
+    <button type="button" data-close data-i18n="btn.cancel" autofocus></button>
+    <button id="confirmOk" type="button" class="danger" data-i18n="btn.confirm"></button>
+  </div>
+</dialog>
+
+<dialog id="achvDlg" class="dialog wide">
+  <div class="dlg-head">
+    <h2 data-i18n="achv.title"></h2>
+    <span id="achvCount" class="muted"></span>
+    <button id="shareBtn" type="button" class="icon-btn" data-icon="share" data-i18n-title="share.button"></button>
+  </div>
+  <div id="achvStats" class="tiles"></div>
+  <div id="achvList"></div>
+  <div class="row end"><button type="button" class="primary" data-close data-i18n="btn.close"></button></div>
+</dialog>
+
+<dialog id="shareDlg" class="dialog wide">
+  <img id="shareImg" class="share-img" alt="">
+  <div class="row end">
+    <button id="shareSend" type="button" class="primary" data-i18n="share.send"></button>
+    <button id="shareSave" type="button" data-i18n="share.save"></button>
+    <button id="shareClose" type="button" data-i18n="btn.close"></button>
+  </div>
+</dialog>
+
+<dialog id="winDlg" class="dialog">
+  <h2 data-i18n="boss.wonTitle"></h2>
+  <div class="rule big"><span id="winIcon" class="rule-icon"></span><div><div id="winRule" class="rule-name"></div><div id="winDesc" class="rule-desc"></div></div></div>
+  <p class="muted" data-i18n="boss.wonDesc"></p>
+  <div class="row end"><button id="winBack" type="button" class="primary" data-i18n="boss.leave" autofocus></button></div>
+</dialog>
+
+<div id="dropOverlay" class="drop-overlay" hidden><div data-i18n="backup.drop"></div></div>
+
+<div id="toasts" class="toasts"></div>
+
+<script src="js/core.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/model.js"></script>
+<script src="js/solver.js"></script>
+<script src="js/bruteforce.js"></script>
+<script src="js/cluegen.js"></script>
+<script src="js/practice.js"></script>
+<script src="js/practice-client.js"></script>
+<script src="js/puzzles.js"></script>
+<script src="js/game.js"></script>
+<script src="js/render.js"></script>
+<script src="js/view.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/achievements.js"></script>
+<script src="js/share.js"></script>
+<script src="js/backup.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

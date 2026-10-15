@@ -1,0 +1,242 @@
+:root {
+  color-scheme: dark;
+  --bg: #121417;
+  --surface: #1b1e23;
+  --surface2: #242830;
+  --border: #2f343d;
+  --text: #e4e6eb;
+  --muted: #9aa1ac;
+  --accent: #5b9dff;
+  --accent-soft: rgba(91, 157, 255, .18);
+  --danger: #ff6b6b;
+  --ok: #4cc38a;
+  --cell: #1f2329;
+  --fog: #181b20;
+  --fog-edge: #121417;
+  --frontier: #222630;
+  --line: #343a44;
+  --box-line: #6b7380;
+  --entry: #7fb2ff;
+  --hl-peer: rgba(150, 190, 255, .07);
+  --hl-same: rgba(91, 157, 255, .22);
+  --hl-sel: rgba(91, 157, 255, .42);
+  --hl-conflict: rgba(255, 107, 107, .3);
+  --clue: rgba(160, 168, 180, .38);
+  --shade: rgba(255, 255, 255, .07);
+  --region-sat: .2;
+  --region-light: .18;
+  --region-overlap: 1.12;
+  --region-filled: 1.5;
+  --diag: rgba(91, 157, 255, .55);
+  --whisper: rgba(76, 195, 138, .7);
+  --renban: rgba(186, 124, 255, .7);
+  --palindrome: rgba(255, 160, 64, .7);
+  --between: rgba(160, 168, 180, .75);
+  --entropic: rgba(230, 190, 60, .72);
+  --modular: rgba(60, 190, 200, .72);
+  --zipper: rgba(240, 110, 170, .72);
+  --regionSum: rgba(90, 150, 255, .72);
+  --region-jitter: .02;
+  --line-pattern: rgba(255, 255, 255, .8);
+  --mini-fog: #2c313a;
+  --flash-done: #4cc38a;
+  --flash-new: #5b9dff;
+  --dot-white: #f4f5f7;
+  --dot-black: #0b0d10;
+  --dot-edge: #8a93a0;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #e9ecf0;
+  --surface: #ffffff;
+  --surface2: #eef0f3;
+  --border: #d9dde3;
+  --text: #1d2129;
+  --muted: #5f6773;
+  --accent: #2563eb;
+  --accent-soft: rgba(37, 99, 235, .12);
+  --danger: #d93025;
+  --ok: #188038;
+  --cell: #ffffff;
+  --fog: #d5d9df;
+  --fog-edge: #e9ecf0;
+  --frontier: #c9ced6;
+  --line: #d4d8de;
+  --box-line: #4b5260;
+  --entry: #2563eb;
+  --hl-peer: rgba(37, 99, 235, .07);
+  --hl-same: rgba(37, 99, 235, .2);
+  --hl-sel: rgba(37, 99, 235, .36);
+  --hl-conflict: rgba(217, 48, 37, .22);
+  --clue: rgba(110, 118, 130, .3);
+  --shade: rgba(20, 30, 50, .07);
+  --region-sat: .42;
+  --region-light: .925;
+  --region-overlap: .965;
+  --region-filled: .86;
+  --diag: rgba(37, 99, 235, .45);
+  --whisper: rgba(24, 150, 80, .6);
+  --renban: rgba(140, 70, 220, .55);
+  --palindrome: rgba(230, 120, 20, .6);
+  --between: rgba(100, 108, 120, .7);
+  --entropic: rgba(200, 150, 20, .65);
+  --modular: rgba(20, 150, 160, .6);
+  --zipper: rgba(220, 70, 140, .55);
+  --regionSum: rgba(40, 100, 230, .55);
+  --region-jitter: .02;
+  --line-pattern: rgba(255, 255, 255, .9);
+  --mini-fog: #c3c8d0;
+  --flash-done: #188038;
+  --flash-new: #2563eb;
+  --dot-white: #ffffff;
+  --dot-black: #1d2129;
+  --dot-edge: #1d2129;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.55 system-ui, -apple-system, "PingFang SC", "Hiragino Sans", "Apple SD Gothic Neo", "Microsoft YaHei", "Yu Gothic UI", "Malgun Gothic", sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+[hidden] { display: none !important; }
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+h1 { font-size: 18px; margin: 0; white-space: nowrap; }
+
+h1 a { color: inherit; text-decoration: none; }
+
+h1 a:hover { color: var(--accent); }
+
+h2 { font-size: 15px; margin: 0; }
+
+h3 { font-size: 14px; margin: 16px 0 8px; color: var(--muted); font-weight: 600; }
+
+p { margin: 0; }
+
+.actions { display: flex; gap: 6px; align-items: center; }
+
+select, input, button {
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-width: 0;
+}
+
+select:focus-visible, input:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+button { cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+
+button:hover { border-color: var(--accent); }
+
+button svg { display: block; }
+
+button [data-icon] { display: inline-flex; }
+
+.icon-btn { padding: 6px; }
+
+.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.danger { color: var(--danger); }
+
+.muted { color: var(--muted); font-size: 13px; }
+
+.ok { color: var(--ok); font-weight: 600; }
+
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+.row.end { justify-content: flex-end; margin-top: 16px; }
+
+.dialog {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+}
+
+.dialog.wide { width: min(760px, calc(100vw - 32px)); }
+
+.dialog::backdrop { background: rgba(0, 0, 0, .5); }
+
+.dialog p { margin: 10px 0; }
+
+.dialog ul { margin: 8px 0; padding-left: 20px; }
+
+.dialog li { margin: 4px 0; }
+
+.check { display: flex; gap: 8px; align-items: center; margin: 14px 0; cursor: pointer; }
+
+.check input { width: 16px; height: 16px; accent-color: var(--accent); }
+
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .25);
+  transition: opacity .4s;
+}
+
+.toast.out { opacity: 0; }
+
+:lang(ko) body { word-break: keep-all; overflow-wrap: anywhere; }
+
+.drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, .45);
+  pointer-events: none;
+}
+
+.drop-overlay > div {
+  padding: 24px 32px;
+  border: 2px dashed var(--accent);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+}
