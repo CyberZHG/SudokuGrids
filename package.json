@@ -1,0 +1,10 @@
+{
+  "name": "sudokugrids",
+  "private": true,
+  "description": "A large map of overlapping sudoku grids with variant rules unlocked through trials.",
+  "scripts": {
+    "generate": "node tools/generate.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "license": "MIT"
+}
