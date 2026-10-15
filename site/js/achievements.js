@@ -6,7 +6,7 @@ const Achv = {
     const pct = (100 * s.regions) / s.regionsTotal;
     return [
       { id: 'first', group: 'completion', name: t('achv.first'), done: s.regions >= 1 },
-      ...[10, 25, 50, 75, 100].map(p => ({ id: `pct${p}`, group: 'completion', name: t('achv.percent', { pct: p }), done: pct >= p })),
+      ...[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map(p => ({ id: `pct${p}`, group: 'completion', name: t('achv.percent', { pct: p }), done: pct >= p })),
       ...RULE_IDS.map(r => ({ id: `trial.${r}`, group: 'trials', rule: r, name: t('achv.trial', { rule: ruleName(r) }), done: Game.won.has(r) })),
       { id: 'share', group: 'other', icon: 'share', name: t('achv.share'), done: !!this.unlocked.share },
     ];
