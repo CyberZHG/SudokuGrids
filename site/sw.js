@@ -1,4 +1,4 @@
-const CACHE = 'sg-v5';
+const CACHE = 'sg-v6';
 const ASSETS = [
   './',
   'index.html',
@@ -7,6 +7,10 @@ const ASSETS = [
   'css/game.css',
   'icons/icon.svg',
   'icons/favicon.svg',
+  'icons/icon-32.png',
+  'icons/icon-180.png',
+  'icons/icon-192.png',
+  'icons/icon-512.png',
   ...['core', 'i18n', 'icons', 'model', 'solver', 'bruteforce', 'cluegen', 'practice', 'practice-client', 'practice-worker', 'puzzles', 'game', 'render', 'view', 'panel', 'achievements', 'share', 'backup', 'main'].map(n => `js/${n}.js`),
 ];
 
